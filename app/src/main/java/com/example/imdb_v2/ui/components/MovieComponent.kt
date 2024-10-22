@@ -37,13 +37,13 @@ import com.example.imdb_v2.ui.theme.mainYellow
 import com.example.imdb_v2.ui.theme.robotoFamily
 import com.example.imdb_v2.viewmodel.BottomNavigationBarViewModel
 import com.example.imdb_v2.viewmodel.MovieViewmodel
-import com.example.imdb_v2.viewmodel.ViewModelConfig
+
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun MovieComponent(
-    movieSource: MovieDTO, movieViewmodel: MovieViewmodel = ViewModelConfig.movieViewmodel,
-    bottomNavigationBarViewModel: BottomNavigationBarViewModel = ViewModelConfig.bottomNavigationBarViewModel,
+    movieSource: MovieDTO, movieViewmodel: MovieViewmodel,
+    bottomNavigationBarViewModel: BottomNavigationBarViewModel,
     startPlayActivity : () -> Unit = {}
 ) {
     Surface(
@@ -52,6 +52,7 @@ fun MovieComponent(
             elevation = 2.dp,
             shape = RoundedCornerShape(bottomStart = 6.dp, bottomEnd = 6.dp)
         ), onClick = {
+
             movieViewmodel.changeSelectedMovieScreen(movieSource.id.toString())
             bottomNavigationBarViewModel.changeActiveScreen(MovieScreenEnum.Play.name)
             startPlayActivity()
@@ -148,19 +149,4 @@ fun MovieComponent(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun MovieComponentPreview() {
-    MovieComponent(
-        MovieDTO(
-            id = 10,
-            movieName = "Wanted",
-            imageURL = "https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg",
-            date = "alksdjflskdf",
-            rating = "alkdsjñlsadfkj",
-            trailerImage = "alñdkjflsdkfj"
-        )
-    )
 }

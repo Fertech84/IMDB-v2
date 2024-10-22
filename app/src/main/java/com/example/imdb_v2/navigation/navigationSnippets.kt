@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -11,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.imdb_v2.ui.pages.MainPage
 import com.example.imdb_v2.viewmodel.BottomNavigationBarViewModel
+import com.example.imdb_v2.viewmodel.MovieViewmodel
 
 enum class MovieScreenEnum() {
     Home,
@@ -21,7 +23,10 @@ enum class MovieScreenEnum() {
 
 
 @Composable
-fun NavigationWrapper(navViewModel: BottomNavigationBarViewModel = BottomNavigationBarViewModel()){
+fun NavigationWrapper(
+    navViewModel: BottomNavigationBarViewModel = viewModel(),
+    movieViewmodel: MovieViewmodel = viewModel()
+) {
     Scaffold { innerPadding ->
 
         val navController = rememberNavController()
@@ -33,8 +38,10 @@ fun NavigationWrapper(navViewModel: BottomNavigationBarViewModel = BottomNavigat
             startDestination = MovieScreenEnum.Home.name,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(route = MovieScreenEnum.Home.name){
-                MainPage(padding = innerPadding,
+            composable(route = MovieScreenEnum.Home.name) {
+                MainPage(
+                    movieViewmodel = movieViewmodel,
+                    padding = innerPadding,
                     currentScreen = MovieScreenEnum.Home.name,
                     startHomeScreen = { screenNavigator.startSpecificScreen(MovieScreenEnum.Home.name) },
                     startPlayScreen = { screenNavigator.startSpecificScreen(MovieScreenEnum.Play.name) },
@@ -42,14 +49,18 @@ fun NavigationWrapper(navViewModel: BottomNavigationBarViewModel = BottomNavigat
                 )
             }
 
-            composable(route = MovieScreenEnum.Play.name){
-                MainPage(padding = innerPadding,
+            composable(route = MovieScreenEnum.Play.name) {
+
+                MainPage(
+                    padding = innerPadding,
+                    movieViewmodel = movieViewmodel,
                     currentScreen = MovieScreenEnum.Play.name,
                     startHomeScreen = { screenNavigator.startSpecificScreen(MovieScreenEnum.Home.name) },
                     startPlayScreen = { screenNavigator.startSpecificScreen(MovieScreenEnum.Play.name) },
                     bottomNavigationBarViewModel = navViewModel
                 )
             }
+
 
         }
     }
@@ -59,10 +70,10 @@ fun NavigationWrapper(navViewModel: BottomNavigationBarViewModel = BottomNavigat
 class MovieScreenNavigator(
     private val navViewModel: BottomNavigationBarViewModel = BottomNavigationBarViewModel(),
     private val navController: NavHostController
-    ){
+) {
     fun startSpecificScreen(
-        screen : String
-    ){
+        screen: String
+    ) {
         navViewModel.changeActiveScreen(screen)
         navController.navigate(screen)
     }

@@ -41,6 +41,7 @@ class MovieViewmodel(
                 withContext(Dispatchers.Main) {
                     _topRatedMovieList.value = topRatedMovieList.results
                     _previewMovieItem.value = topRatedMovieList.results[0]
+                    _selectedMovieScreen.value = topRatedMovieList.results[0]
                 }
             }
         }
@@ -49,6 +50,7 @@ class MovieViewmodel(
     fun changeSelectedMovieScreen(id : String){
         viewModelScope.launch(Dispatchers.IO){
             val newSelectedMovieForScreen = movieRepository.getMovie(id)
+            Log.e("New Selected Movie >>>>>", "$newSelectedMovieForScreen")
             withContext(Dispatchers.Main){
                 _selectedMovieScreen.value = newSelectedMovieForScreen
             }

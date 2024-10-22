@@ -19,24 +19,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.imdb_v2.R
 import com.example.imdb_v2.model.MovieDTO
 import com.example.imdb_v2.navigation.MovieScreenEnum
 import com.example.imdb_v2.ui.theme.mainWhite
-import com.example.imdb_v2.viewmodel.ViewModelConfig
+import com.example.imdb_v2.viewmodel.BottomNavigationBarViewModel
+import com.example.imdb_v2.viewmodel.MovieViewmodel
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun MoviePreview(
+    movieViewmodel: MovieViewmodel = viewModel(),
+    bottomNavigationBarViewModel : BottomNavigationBarViewModel = viewModel(),
     movieSource : MovieDTO,
     startPlayActivity : () -> Unit = {}
 ) {
 
     Surface (onClick = {
-        ViewModelConfig.movieViewmodel.changeSelectedMovieScreen(movieSource.id.toString())
-        ViewModelConfig.bottomNavigationBarViewModel.changeActiveScreen(MovieScreenEnum.Play.name)
+        movieViewmodel.changeSelectedMovieScreen(movieSource.id.toString())
+        bottomNavigationBarViewModel.changeActiveScreen(MovieScreenEnum.Play.name)
         startPlayActivity()
 
     }) {
@@ -73,7 +77,8 @@ fun MoviePreview(
                             top.linkTo(trailer.bottom, margin = (-105).dp)
                             start.linkTo(trailer.start, margin = 20.dp)
                         }
-                        .width(124.dp).height(200.dp),
+                        .width(124.dp)
+                        .height(200.dp),
                     contentScale = ContentScale.Fit
 
                 )

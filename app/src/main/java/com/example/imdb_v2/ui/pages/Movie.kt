@@ -51,13 +51,15 @@ import com.example.imdb_v2.ui.theme.lightGray
 import com.example.imdb_v2.ui.theme.mainBlack
 import com.example.imdb_v2.ui.theme.mainWhite
 import com.example.imdb_v2.ui.theme.mainYellow
+import com.example.imdb_v2.viewmodel.BottomNavigationBarViewModel
 import com.example.imdb_v2.viewmodel.MovieViewmodel
-import com.example.imdb_v2.viewmodel.ViewModelConfig
+
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun MovieScreen( padding: PaddingValues,
-                 movieViewmodel: MovieViewmodel = ViewModelConfig.movieViewmodel,
+                 movieViewmodel: MovieViewmodel = viewModel(),
+                 bottomNavigationBarViewModel: BottomNavigationBarViewModel = viewModel(),
                  startHomeScreen : () -> Unit = {},
                  startProfileScreen : () -> Unit = {},
                  startSearchScreen : () -> Unit = {}
@@ -298,7 +300,8 @@ fun MovieScreen( padding: PaddingValues,
             }
         }
     }else {
-        movieViewmodel.changeSelectedMovieScreen("100")
+
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
