@@ -34,8 +34,7 @@ fun HomePage(
     val popularState by movieViewModel.popularMovieList.observeAsState()
     val previewMovieItem by movieViewModel.previewMovieItem.observeAsState()
 
-    movieViewModel.getPopular()
-    movieViewModel.getTopRated()
+
 
 
     if (topRatedState != null && popularState != null && previewMovieItem != null) {

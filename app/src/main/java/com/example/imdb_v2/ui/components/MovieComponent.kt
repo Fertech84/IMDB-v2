@@ -1,7 +1,6 @@
 package com.example.imdb_v2.ui.components
 
-import MovieServiceConfig
-import androidx.compose.foundation.Image
+import com.example.imdb_v2.services.MovieServiceConfig
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
@@ -18,17 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.imdb_v2.R
 import com.example.imdb_v2.model.MovieDTO
 import com.example.imdb_v2.navigation.MovieScreenEnum
 import com.example.imdb_v2.ui.theme.mainBlack

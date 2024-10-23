@@ -1,32 +1,44 @@
+package com.example.imdb_v2.services
+
 import com.example.imdb_v2.model.MovieDTO
 import com.example.imdb_v2.model.MoviesDTO
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import javax.inject.Singleton
 
 
+@Module
+@InstallIn(SingletonComponent::class)
 object MovieServiceConfig {
+
+
 
     const val BASE_URL = "https://api.themoviedb.org/3/"
 
     const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500/"
 
-    private var movieRetrofit: Retrofit? = null
 
-    private fun getInstance(): Retrofit {
-        if (movieRetrofit == null) {
-            movieRetrofit = Retrofit.Builder()
+    @Provides
+    @Singleton
+    fun provideRetrofit(): Retrofit {
+            return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-        }
-
-        return movieRetrofit!!
     }
 
-    val movieService: MovieService =
-        MovieServiceConfig.getInstance().create(MovieService::class.java)
+    @Provides
+    @Singleton
+    fun provideMovieService(retrofit : Retrofit): MovieService {
+        return retrofit.create(MovieService::class.java)
+    }
+
 }
 
 
