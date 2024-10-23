@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     kotlin("plugin.serialization") version "2.0.21"
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 
 }
 
@@ -94,7 +96,14 @@ dependencies {
 
     //Serialization
     implementation(libs.kotlinx.serialization.json)
-//
+
+    //HILT
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
 
+}
+
+kapt {
+    correctErrorTypes = true
 }

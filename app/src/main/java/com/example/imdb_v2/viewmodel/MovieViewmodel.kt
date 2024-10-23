@@ -9,12 +9,15 @@ import com.example.imdb_v2.model.MovieDTO
 import com.example.imdb_v2.model.MoviesDTO
 import com.example.imdb_v2.repository.MovieRepository
 import com.example.imdb_v2.repository.MovieRepositoryImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class MovieViewmodel(
-    private val movieRepository: MovieRepository = MovieRepositoryImpl()
+@HiltViewModel
+class MovieViewmodel @Inject constructor(
+    private val movieRepository : MovieRepositoryImpl
 ) : ViewModel() {
 
     //Top rated state
@@ -32,8 +35,12 @@ class MovieViewmodel(
     val selectedMovieScreen : LiveData<MovieDTO> get() = _selectedMovieScreen
 
 
+    init {
+        getTopRated()
+        getPopular()
+    }
 
-    fun getTopRated() {
+    private fun getTopRated() {
         if (topRatedMovieList.value == null) {
             viewModelScope.launch(Dispatchers.IO) {
                 val topRatedMovieList: MoviesDTO = movieRepository.getTopRated()
@@ -57,7 +64,7 @@ class MovieViewmodel(
         }
     }
 
-    fun getPopular(){
+    private fun getPopular(){
 
         if (popularMovieList.value == null){
             viewModelScope.launch(Dispatchers.IO) {

@@ -32,8 +32,10 @@ import com.example.imdb_v2.ui.pages.MovieScreen
 import com.example.imdb_v2.ui.theme.IMDBv2Theme
 import com.example.imdb_v2.ui.theme.mainYellow
 import com.example.imdb_v2.viewmodel.BottomNavigationBarViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,20 +59,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-//    @Preview
-//    @Composable
-//    fun MovieTestPreview() {
-//        Scaffold {
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .padding(it)
-//                    .background(Color.White)
-//            ) {
-//                MoviePreview()
-//            }
-//        }
-//    }
+
 }
 
 
