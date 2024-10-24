@@ -57,7 +57,7 @@ fun NavBar(
                 }
                 IconButton(onClick = {
                     bottomNavigationBarViewModel.changeActiveScreen(MovieScreenEnum.Search.name)
-
+                    startSearchActivity()
                 }) {
                     Icon(
                         Icons.Filled.Search,

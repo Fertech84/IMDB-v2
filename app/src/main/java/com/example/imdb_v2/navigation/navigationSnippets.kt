@@ -40,7 +40,7 @@ fun NavigationWrapper(
 
         NavHost(
             navController = navController,
-            startDestination = MovieScreenEnum.Search.name,
+            startDestination = MovieScreenEnum.Login.name,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = MovieScreenEnum.Login.name){
@@ -56,7 +56,15 @@ fun NavigationWrapper(
             }
 
             composable(route = MovieScreenEnum.Search.name){
-                SearchPage(movieViewmodel = movieViewmodel)
+                MainPage(
+                    movieViewmodel = movieViewmodel,
+                    padding = innerPadding,
+                    currentScreen = MovieScreenEnum.Search.name,
+                    startHomeScreen = { screenNavigator.startSpecificScreen(MovieScreenEnum.Home.name) },
+                    startPlayScreen = { screenNavigator.startSpecificScreen(MovieScreenEnum.Play.name) },
+                    startSearchScreen = {screenNavigator.startSpecificScreen(MovieScreenEnum.Search.name)},
+                    bottomNavigationBarViewModel = navViewModel
+                )
             }
             composable(route = MovieScreenEnum.Home.name) {
                 MainPage(
@@ -65,6 +73,7 @@ fun NavigationWrapper(
                     currentScreen = MovieScreenEnum.Home.name,
                     startHomeScreen = { screenNavigator.startSpecificScreen(MovieScreenEnum.Home.name) },
                     startPlayScreen = { screenNavigator.startSpecificScreen(MovieScreenEnum.Play.name) },
+                    startSearchScreen = {screenNavigator.startSpecificScreen(MovieScreenEnum.Search.name)},
                     bottomNavigationBarViewModel = navViewModel
                 )
             }
@@ -77,6 +86,7 @@ fun NavigationWrapper(
                     currentScreen = MovieScreenEnum.Play.name,
                     startHomeScreen = { screenNavigator.startSpecificScreen(MovieScreenEnum.Home.name) },
                     startPlayScreen = { screenNavigator.startSpecificScreen(MovieScreenEnum.Play.name) },
+                    startSearchScreen = {screenNavigator.startSpecificScreen(MovieScreenEnum.Search.name)},
                     bottomNavigationBarViewModel = navViewModel
                 )
             }

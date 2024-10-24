@@ -1,9 +1,6 @@
 package com.example.imdb_v2.ui.pages
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -32,15 +29,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.imdb_v2.R
 import com.example.imdb_v2.model.MovieDTO
 import com.example.imdb_v2.services.MovieServiceConfig
 import com.example.imdb_v2.ui.theme.lightGray
@@ -50,7 +44,10 @@ import com.example.imdb_v2.viewmodel.MovieViewmodel
 
 
 @Composable
-fun SearchPage(movieViewmodel: MovieViewmodel = viewModel()) {
+fun SearchPage(
+    movieViewmodel: MovieViewmodel = viewModel(),
+    startPlayScreen : ()-> Unit = {}
+    ) {
 
     var searchMovieTextFieldState by rememberSaveable { mutableStateOf("") }
     val resultMoviesState by movieViewmodel.searchMovieList.observeAsState()
@@ -89,7 +86,11 @@ fun SearchPage(movieViewmodel: MovieViewmodel = viewModel()) {
                 }
             } else {
                 items(resultMoviesState!!) {
-                    SearchResultComponent(movieSource = it)
+                    SearchResultComponent(
+                        movieSource = it,
+                        movieViewmodel = movieViewmodel,
+                        startPlayScreen = startPlayScreen
+                        )
                 }
             }
 
@@ -101,9 +102,13 @@ fun SearchPage(movieViewmodel: MovieViewmodel = viewModel()) {
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-private fun SearchResultComponent(movieSource: MovieDTO) {
+private fun SearchResultComponent(movieSource: MovieDTO, movieViewmodel: MovieViewmodel = viewModel(), startPlayScreen: () -> Unit) {
     Surface(
         shape = RoundedCornerShape(10.dp),
+        onClick = {
+            movieViewmodel.changeSelectedMovieScreen(movieSource.id.toString())
+            startPlayScreen()
+        },
         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
     ) {
         Row(

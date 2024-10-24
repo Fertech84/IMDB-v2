@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.imdb_v2.model.MovieDTO
 import com.example.imdb_v2.model.MoviesDTO
-import com.example.imdb_v2.repository.MovieRepository
 import com.example.imdb_v2.repository.MovieRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

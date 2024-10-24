@@ -37,6 +37,7 @@ fun MainPage(
             NavBar(
                 startHomeActivity = startHomeScreen,
                 startPlayActivity = startPlayScreen,
+                startSearchActivity = startSearchScreen,
                 bottomNavigationBarViewModel = bottomNavigationBarViewModel
             )
         },
@@ -57,7 +58,13 @@ fun MainPage(
                     movieViewmodel = movieViewmodel,
                     bottomNavigationBarViewModel = bottomNavigationBarViewModel
                     )
+
+                MovieScreenEnum.Search.name -> SearchPage(
+                    movieViewmodel = movieViewmodel,
+                    startPlayScreen = startPlayScreen
+                )
             }
+
 
 
         } else {
