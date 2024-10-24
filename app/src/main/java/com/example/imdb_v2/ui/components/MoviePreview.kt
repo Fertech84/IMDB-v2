@@ -22,21 +22,18 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.imdb_v2.model.MovieDTO
 import com.example.imdb_v2.navigation.MovieScreenEnum
 import com.example.imdb_v2.ui.theme.mainWhite
-import com.example.imdb_v2.viewmodel.BottomNavigationBarViewModel
 import com.example.imdb_v2.viewmodel.MovieViewmodel
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun MoviePreview(
     movieViewmodel: MovieViewmodel = viewModel(),
-    bottomNavigationBarViewModel : BottomNavigationBarViewModel = viewModel(),
     movieSource : MovieDTO,
     startPlayActivity : () -> Unit = {}
 ) {
 
     Surface (onClick = {
         movieViewmodel.changeSelectedMovieScreen(movieSource.id.toString())
-        bottomNavigationBarViewModel.changeActiveScreen(MovieScreenEnum.Play.name)
         startPlayActivity()
 
     }) {

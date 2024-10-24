@@ -15,13 +15,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.imdb_v2.navigation.MovieScreenEnum
 import com.example.imdb_v2.ui.components.NavBar
 import com.example.imdb_v2.ui.theme.mainYellow
-import com.example.imdb_v2.viewmodel.BottomNavigationBarViewModel
 import com.example.imdb_v2.viewmodel.MovieViewmodel
 
 @Composable
 fun MainPage(
-    padding: PaddingValues,
-    bottomNavigationBarViewModel: BottomNavigationBarViewModel = viewModel(),
     movieViewmodel: MovieViewmodel = viewModel(),
     startHomeScreen: () -> Unit = {},
     startPlayScreen: () -> Unit = {},
@@ -30,7 +27,7 @@ fun MainPage(
     currentScreen: String = MovieScreenEnum.Home.name
 
 ) {
-    val currentScreenState by bottomNavigationBarViewModel.activeScreen.observeAsState()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
@@ -38,25 +35,25 @@ fun MainPage(
                 startHomeActivity = startHomeScreen,
                 startPlayActivity = startPlayScreen,
                 startSearchActivity = startSearchScreen,
-                bottomNavigationBarViewModel = bottomNavigationBarViewModel
+                initialState = currentScreen
             )
         },
     ) { innerPadding ->
 
 
-        if (currentScreenState != null) {
+
 
             when (currentScreen) {
                 MovieScreenEnum.Home.name -> HomePage(
                     movieViewModel = movieViewmodel,
-                    bottomNavigationBarViewModel = bottomNavigationBarViewModel,
+
                     padding = innerPadding,
                     startDetailScreen = startPlayScreen
                 )
 
                 MovieScreenEnum.Play.name -> MovieScreen(padding = innerPadding,
                     movieViewmodel = movieViewmodel,
-                    bottomNavigationBarViewModel = bottomNavigationBarViewModel
+
                     )
 
                 MovieScreenEnum.Search.name -> SearchPage(
@@ -67,15 +64,6 @@ fun MainPage(
 
 
 
-        } else {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                CircularProgressIndicator(color = mainYellow)
-            }
-        }
 
         //MovieScreen(title = "alñksjdlf", padding = innerPadding )
     }

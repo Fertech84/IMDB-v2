@@ -29,7 +29,6 @@ import com.example.imdb_v2.ui.theme.mainBlack
 import com.example.imdb_v2.ui.theme.mainWhite
 import com.example.imdb_v2.ui.theme.mainYellow
 import com.example.imdb_v2.ui.theme.robotoFamily
-import com.example.imdb_v2.viewmodel.BottomNavigationBarViewModel
 import com.example.imdb_v2.viewmodel.MovieViewmodel
 
 
@@ -37,7 +36,6 @@ import com.example.imdb_v2.viewmodel.MovieViewmodel
 @Composable
 fun MovieComponent(
     movieSource: MovieDTO, movieViewmodel: MovieViewmodel,
-    bottomNavigationBarViewModel: BottomNavigationBarViewModel,
     startPlayActivity : () -> Unit = {}
 ) {
     Surface(
@@ -48,7 +46,6 @@ fun MovieComponent(
         ), onClick = {
 
             movieViewmodel.changeSelectedMovieScreen(movieSource.id.toString())
-            bottomNavigationBarViewModel.changeActiveScreen(MovieScreenEnum.Play.name)
             startPlayActivity()
         }
     ) {

@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.imdb_v2.model.MovieDTO
 import com.example.imdb_v2.ui.theme.mainWhite
-import com.example.imdb_v2.viewmodel.BottomNavigationBarViewModel
 import com.example.imdb_v2.viewmodel.MovieViewmodel
 
 @Composable
@@ -26,7 +25,6 @@ fun MovieSectionComponent(
     movies: List<MovieDTO>,
     startPlayActivity: () -> Unit = {},
     movieViewmodel: MovieViewmodel = viewModel(),
-    bottomNavigationBarViewModel: BottomNavigationBarViewModel = viewModel()
 ) {
     Box(
         modifier = Modifier.background(mainWhite)
@@ -43,8 +41,8 @@ fun MovieSectionComponent(
                 item { Spacer(modifier = Modifier.width(1.dp)) }
 
                 items(movies) {
-                    MovieComponent(movieSource = it, startPlayActivity = startPlayActivity, movieViewmodel = movieViewmodel,
-                        bottomNavigationBarViewModel = bottomNavigationBarViewModel)
+                    MovieComponent(movieSource = it, startPlayActivity = startPlayActivity, movieViewmodel = movieViewmodel)
+
                 }
                 item { Spacer(modifier = Modifier.width(1.dp)) }
 
