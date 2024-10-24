@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.imdb_v2.ui.pages.LoginPage
 import com.example.imdb_v2.ui.pages.MainPage
+import com.example.imdb_v2.ui.pages.SearchPage
 import com.example.imdb_v2.ui.pages.SignupScreen
 import com.example.imdb_v2.viewmodel.BottomNavigationBarViewModel
 import com.example.imdb_v2.viewmodel.MovieViewmodel
@@ -39,7 +40,7 @@ fun NavigationWrapper(
 
         NavHost(
             navController = navController,
-            startDestination = MovieScreenEnum.Login.name,
+            startDestination = MovieScreenEnum.Search.name,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = MovieScreenEnum.Login.name){
@@ -54,6 +55,9 @@ fun NavigationWrapper(
                 )
             }
 
+            composable(route = MovieScreenEnum.Search.name){
+                SearchPage(movieViewmodel = movieViewmodel)
+            }
             composable(route = MovieScreenEnum.Home.name) {
                 MainPage(
                     movieViewmodel = movieViewmodel,

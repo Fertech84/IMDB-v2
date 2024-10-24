@@ -9,6 +9,7 @@ interface MovieRepository {
     suspend fun getTopRated() : MoviesDTO
     suspend fun getPopular() : MoviesDTO
     suspend fun getMovie(movieId : String) : MovieDTO
+    suspend fun searchMovie(movieName : String) : MoviesDTO
 }
 
 class MovieRepositoryImpl @Inject constructor (
@@ -25,6 +26,10 @@ class MovieRepositoryImpl @Inject constructor (
 
     override suspend fun getMovie(movieId: String): MovieDTO {
         return movieService.getMovie(movieId)
+    }
+
+    override suspend fun searchMovie(movieName: String): MoviesDTO {
+        return movieService.searchMovies(movieName)
     }
 
 
