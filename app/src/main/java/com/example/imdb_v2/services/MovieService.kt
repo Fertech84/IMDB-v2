@@ -10,6 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 import javax.inject.Singleton
 
 
@@ -44,6 +45,7 @@ object MovieServiceConfig {
 
 interface MovieService {
 
+
     @GET("movie/top_rated?api_key=c5c47722a4adcc77f6e84f28a48b857a")
     suspend fun getTopRated(): MoviesDTO
 
@@ -52,4 +54,10 @@ interface MovieService {
 
     @GET("movie/{movie_id}?api_key=c5c47722a4adcc77f6e84f28a48b857a")
     suspend fun getMovie(@Path("movie_id") movieId: String) : MovieDTO
+
+    @GET("search/movie?")
+    suspend fun searchMovies(
+        @Query("query") movieName : String,
+        @Query("api_key") apiKey : String = "c5c47722a4adcc77f6e84f28a48b857a"
+    ): MoviesDTO
 }

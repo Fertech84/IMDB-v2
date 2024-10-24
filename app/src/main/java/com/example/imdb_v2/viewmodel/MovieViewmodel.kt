@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.imdb_v2.model.MovieDTO
 import com.example.imdb_v2.model.MoviesDTO
-import com.example.imdb_v2.repository.MovieRepository
 import com.example.imdb_v2.repository.MovieRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -34,12 +33,25 @@ class MovieViewmodel @Inject constructor(
     private val _selectedMovieScreen = MutableLiveData<MovieDTO>()
     val selectedMovieScreen : LiveData<MovieDTO> get() = _selectedMovieScreen
 
+    private val _searchMovieList = MutableLiveData<List<MovieDTO>>()
+    val searchMovieList : LiveData<List<MovieDTO>> get() = _searchMovieList
+
 
     init {
         getTopRated()
         getPopular()
+        _searchMovieList.value = emptyList()
     }
 
+
+    fun searchMovie(movieName : String){
+        viewModelScope.launch(Dispatchers.IO) {
+            val searchResults  = movieRepository.searchMovie(movieName)
+            withContext(Dispatchers.Main){
+                _searchMovieList.value = searchResults.results
+            }
+        }
+    }
     private fun getTopRated() {
         if (topRatedMovieList.value == null) {
             viewModelScope.launch(Dispatchers.IO) {
@@ -72,6 +84,7 @@ class MovieViewmodel @Inject constructor(
 
                 withContext(Dispatchers.Main){
                     _popularMovieList.value = popularMovieList.results
+
                 }
             }
         }

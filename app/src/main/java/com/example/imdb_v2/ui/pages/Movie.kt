@@ -45,7 +45,6 @@ import com.example.imdb_v2.ui.theme.lightGray
 import com.example.imdb_v2.ui.theme.mainBlack
 import com.example.imdb_v2.ui.theme.mainWhite
 import com.example.imdb_v2.ui.theme.mainYellow
-import com.example.imdb_v2.viewmodel.BottomNavigationBarViewModel
 import com.example.imdb_v2.viewmodel.MovieViewmodel
 
 
@@ -53,7 +52,6 @@ import com.example.imdb_v2.viewmodel.MovieViewmodel
 @Composable
 fun MovieScreen( padding: PaddingValues,
                  movieViewmodel: MovieViewmodel = viewModel(),
-                 bottomNavigationBarViewModel: BottomNavigationBarViewModel = viewModel(),
                  startHomeScreen : () -> Unit = {},
                  startProfileScreen : () -> Unit = {},
                  startSearchScreen : () -> Unit = {}

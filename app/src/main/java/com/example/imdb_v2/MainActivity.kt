@@ -31,7 +31,6 @@ import com.example.imdb_v2.ui.pages.MainPage
 import com.example.imdb_v2.ui.pages.MovieScreen
 import com.example.imdb_v2.ui.theme.IMDBv2Theme
 import com.example.imdb_v2.ui.theme.mainYellow
-import com.example.imdb_v2.viewmodel.BottomNavigationBarViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 

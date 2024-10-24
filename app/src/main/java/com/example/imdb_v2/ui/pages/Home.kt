@@ -17,14 +17,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.imdb_v2.ui.components.MoviePreview
 import com.example.imdb_v2.ui.components.MovieSectionComponent
 import com.example.imdb_v2.ui.theme.mainYellow
-import com.example.imdb_v2.viewmodel.BottomNavigationBarViewModel
 import com.example.imdb_v2.viewmodel.MovieViewmodel
 
 @Composable
 fun HomePage(
     padding: PaddingValues,
     movieViewModel: MovieViewmodel = viewModel(),
-    bottomNavigationBarViewModel: BottomNavigationBarViewModel = viewModel(),
     startDetailScreen: () -> Unit = {},
     startProfileScreen: () -> Unit = {},
     startSearchScreen: () -> Unit = {}
@@ -50,7 +48,7 @@ fun HomePage(
                     movieSource = previewMovieItem!!,
                     startPlayActivity = startDetailScreen,
                     movieViewmodel = movieViewModel,
-                    bottomNavigationBarViewModel = bottomNavigationBarViewModel
+
                 )
             }
 
@@ -63,7 +61,7 @@ fun HomePage(
                         title = "Top Rated",
                         startPlayActivity = startDetailScreen,
                         movieViewmodel = movieViewModel,
-                        bottomNavigationBarViewModel = bottomNavigationBarViewModel
+
                     )
                 }
             }
@@ -75,7 +73,7 @@ fun HomePage(
                         title = "Popular",
                         startPlayActivity = startDetailScreen,
                         movieViewmodel = movieViewModel,
-                        bottomNavigationBarViewModel = bottomNavigationBarViewModel
+
                     )
                 }
             }

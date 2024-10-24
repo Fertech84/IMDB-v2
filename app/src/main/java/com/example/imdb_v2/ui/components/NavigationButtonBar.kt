@@ -17,6 +17,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
@@ -24,19 +27,20 @@ import com.example.imdb_v2.navigation.MovieScreenEnum
 import com.example.imdb_v2.ui.theme.lightGray
 import com.example.imdb_v2.ui.theme.mainBlack
 import com.example.imdb_v2.ui.theme.mainYellow
-import com.example.imdb_v2.viewmodel.BottomNavigationBarViewModel
 
 
 @Composable
 fun NavBar(
-    bottomNavigationBarViewModel: BottomNavigationBarViewModel = BottomNavigationBarViewModel(),
+    initialState : String,
     startHomeActivity: () -> Unit = {},
     startPlayActivity: () -> Unit = {},
     startProfileActivity: () -> Unit = {},
     startSearchActivity: () -> Unit = {}
 ) {
 
-    val selectedScreenNameState by bottomNavigationBarViewModel.activeScreen.observeAsState()
+    var selectedScreenNameState by rememberSaveable {
+        mutableStateOf(initialState)
+    }
     BottomAppBar(containerColor = mainYellow,
         modifier = Modifier.clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)),
         actions = {
@@ -45,29 +49,28 @@ fun NavBar(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 IconButton(onClick = {
-
+                    selectedScreenNameState = MovieScreenEnum.Home.name
                     startHomeActivity()
-                    bottomNavigationBarViewModel.changeActiveScreen(MovieScreenEnum.Home.name)
                 }) {
                     Icon(
                         Icons.Filled.Home,
                         contentDescription = "Principal",
-                        tint = if (selectedScreenNameState.equals(MovieScreenEnum.Home.name)) mainBlack else lightGray
+                        tint = if (selectedScreenNameState == MovieScreenEnum.Home.name) mainBlack else lightGray
                     )
                 }
                 IconButton(onClick = {
-                    bottomNavigationBarViewModel.changeActiveScreen(MovieScreenEnum.Search.name)
-
+                    selectedScreenNameState = MovieScreenEnum.Search.name
+                    startSearchActivity()
                 }) {
                     Icon(
                         Icons.Filled.Search,
                         contentDescription = MovieScreenEnum.Search.name,
-                        tint = if (selectedScreenNameState.equals(MovieScreenEnum.Search.name)) mainBlack else lightGray
+                        tint = if (selectedScreenNameState == MovieScreenEnum.Search.name) mainBlack else lightGray
                     )
                 }
                 IconButton(onClick = {
+                    selectedScreenNameState = MovieScreenEnum.Play.name
                     startPlayActivity()
-                    bottomNavigationBarViewModel.changeActiveScreen(MovieScreenEnum.Play.name)
                 }) {
                     Surface(
                         shape = RoundedCornerShape(16.dp)
@@ -77,21 +80,19 @@ fun NavBar(
                             contentDescription = "Reproducir",
                             tint = mainYellow,
                             modifier = Modifier.background(
-                                if (selectedScreenNameState.equals(
-                                        MovieScreenEnum.Play.name
-                                    )
+                                if (selectedScreenNameState == MovieScreenEnum.Play.name
                                 ) mainBlack else lightGray
                             )
                         )
                     }
                 }
                 IconButton(onClick = {
-                    bottomNavigationBarViewModel.changeActiveScreen(MovieScreenEnum.Profile.name)
+                    selectedScreenNameState = MovieScreenEnum.Profile.name
                 }) {
                     Icon(
                         Icons.Filled.Person,
                         contentDescription = "Perfil",
-                        tint = if (selectedScreenNameState.equals(MovieScreenEnum.Profile.name)) mainBlack else lightGray
+                        tint = if (selectedScreenNameState == MovieScreenEnum.Profile.name) mainBlack else lightGray
                     )
                 }
             }
