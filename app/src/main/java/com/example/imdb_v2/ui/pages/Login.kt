@@ -3,9 +3,11 @@ package com.example.imdb_v2.ui.pages
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,7 +18,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -43,10 +47,12 @@ import com.example.imdb_v2.ui.theme.mainYellow
 import org.w3c.dom.Text
 
 
-
-
 @Composable
-fun LoginPage() {
+fun LoginPage(
+    navigateToSignup: () -> Unit = {},
+    navigateToHome: () -> Unit = {},
+    navigateToProfile: () -> Unit = {}
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -143,7 +149,7 @@ fun LoginPage() {
 
         Spacer(modifier = Modifier.height(28.dp))
         Button(
-            onClick = {},
+            onClick = navigateToProfile,
             enabled = loginButtonEnableState,
             colors = ButtonColors(
                 contentColor = mainWhite,
@@ -174,56 +180,91 @@ fun LoginPage() {
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Image(
-                    painter = painterResource(id = R.drawable.apple_13),
-                    contentDescription = "login with google",
-                    modifier = Modifier
-                        .size(58.dp)
-                        .clip(CircleShape)
-                )
+            Surface(shape = CircleShape) {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.apple_13),
+                        contentDescription = "login with google",
+                        modifier = Modifier
+                            .size(58.dp)
+                            .clip(CircleShape)
+
+                    )
+                }
             }
-            IconButton(onClick = { /*TODO*/ }) {
-                Image(
-                    painter = painterResource(id = R.drawable.facebook_login_image),
-                    contentDescription = "login with google",
-                    modifier = Modifier
-                        .size(58.dp)
-                        .clip(CircleShape)
-                )
+
+            Surface(shape = CircleShape) {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.facebook_login_image),
+                        contentDescription = "login with google",
+                        modifier = Modifier
+                            .size(58.dp)
+                            .clip(CircleShape)
+                    )
+                }
             }
-            IconButton(onClick = { /*TODO*/ }) {
-                Image(
-                    painter = painterResource(id = R.drawable.google_g_2015),
-                    contentDescription = "login with google",
-                    modifier = Modifier
-                        .size(58.dp)
-                        .clip(CircleShape)
-                )
+
+            Surface(shape = CircleShape) {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.google_g_2015),
+                        contentDescription = "login with google",
+                        modifier = Modifier
+                            .size(58.dp)
+                            .clip(CircleShape)
+                    )
+                }
             }
+
 
         }
 
-        Spacer(modifier = Modifier.height(23.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         Row {
             Text(
                 text = "¿No tenes cuenta? ",
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Light
+                fontWeight = FontWeight.Light,
+                modifier = Modifier.padding(top = 13.dp)
             )
-            Text(
-                text = "Registrate",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
-            )
+
+
+            TextButton(
+                onClick = navigateToSignup,
+                colors = ButtonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = darkGray,
+                    disabledContentColor = lightGray,
+                    disabledContainerColor = Color.Transparent
+                )
+            ) {
+                Text(
+                    text = "Registrate",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+        TextButton(
+            onClick = navigateToHome,
+            colors = ButtonColors(
+                containerColor = Color.Transparent,
+                contentColor = darkGray,
+                disabledContentColor = lightGray,
+                disabledContainerColor = Color.Transparent
+            )
+        ) {
             Text(
                 text = "Continuar como invitado",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Black
             )
+        }
 
     }
 }

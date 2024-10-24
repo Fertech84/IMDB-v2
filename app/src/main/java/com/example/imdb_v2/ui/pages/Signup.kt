@@ -41,15 +41,9 @@ import com.example.imdb_v2.ui.theme.mainWhite
 
 
 @Composable
-fun SignupScreen() {
-
-}
-
-
-@Preview
-@Composable
-fun PreviewSignupScreen() {
-
+fun SignupScreen(
+    navigateToLogin : ()-> Unit = {}
+) {
     var signupNameState by rememberSaveable { mutableStateOf("") }
     var signupEmailState by rememberSaveable { mutableStateOf("") }
     var signupPasswordState by rememberSaveable { mutableStateOf("") }
@@ -107,7 +101,6 @@ fun PreviewSignupScreen() {
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier
                 .width(300.dp)
-                .height(54.dp)
         )
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -122,7 +115,6 @@ fun PreviewSignupScreen() {
             label = { Text(text = "Correo electrónico") },
             modifier = Modifier
                 .width(300.dp)
-                .height(54.dp)
         )
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -148,7 +140,6 @@ fun PreviewSignupScreen() {
                 label = { Text(text = "Contraseña") },
                 modifier = Modifier
                     .width(300.dp)
-                    .height(54.dp)
             )
         }else {
             OutlinedTextField(
@@ -171,7 +162,6 @@ fun PreviewSignupScreen() {
                 label = { Text(text = "Contraseña") },
                 modifier = Modifier
                     .width(300.dp)
-                    .height(54.dp)
             )
         }
         Spacer(modifier = Modifier.height(9.dp))
@@ -188,7 +178,7 @@ fun PreviewSignupScreen() {
         }
         Spacer(modifier = Modifier.height(34.dp))
         Button(
-            onClick = {},
+            onClick = navigateToLogin,
             enabled = signupEnableButton,
             colors = ButtonColors(
                 contentColor = mainWhite,
@@ -210,6 +200,13 @@ fun PreviewSignupScreen() {
 
 
     }
+}
+
+
+@Preview
+@Composable
+fun PreviewSignupScreen() {
+    SignupScreen()
 }
 
 private fun validateSignupStatus(name: String, email: String, password: String) =
