@@ -26,5 +26,8 @@ data  class MovieDTO(
     val rating : String,
 
     @SerializedName("backdrop_path")
-    val trailerImage : String
+    val trailerImage : String,
+
+    @SerializedName("overview")
+    val description : String
 )

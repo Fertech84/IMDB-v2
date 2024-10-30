@@ -54,19 +54,3 @@ fun MovieSectionComponent(
 }
 
 
-@Composable
-@Preview
-fun TestSection() {
-    MovieSectionComponent(
-        "Titulo", listOf(
-            MovieDTO(
-                10,
-                "lñaksjdfl",
-                "https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg",
-                "ñlaskjdlñfj",
-                "12.5",
-                "https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg",
-            )
-        )
-    )
-}

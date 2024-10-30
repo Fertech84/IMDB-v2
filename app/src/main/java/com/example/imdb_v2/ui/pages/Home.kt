@@ -54,7 +54,7 @@ fun HomePage(
 
 
 
-            if (!topRatedState.isNullOrEmpty()) {
+            topRatedState?.let {
                 item {
                     MovieSectionComponent(
                         movies = topRatedState!!,

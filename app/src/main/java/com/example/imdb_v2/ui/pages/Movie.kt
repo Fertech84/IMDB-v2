@@ -94,7 +94,7 @@ fun MovieScreen( padding: PaddingValues,
                     Row {
                         Spacer(modifier = Modifier.width(35.dp))
                         Text(
-                            text = "The queens Gambit (título original)",
+                            text = movieToShowInScreen!!.movieName,
 
                             fontWeight = FontWeight.Normal,
                             color = lightGray,
@@ -167,10 +167,7 @@ fun MovieScreen( padding: PaddingValues,
                                 )
                             }
                             Text(
-                                text = "Ambientada en la Guerra Fría; una" +
-                                        " huérfana llamada Beth Harmon con un don" +
-                                        " para el ajedrez lucha contra las adicciones" +
-                                        " mientras…",
+                                text = movieToShowInScreen!!.description,
                                 fontSize = 14.sp
                             )
                         }
