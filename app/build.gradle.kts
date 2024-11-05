@@ -68,13 +68,11 @@ dependencies {
     implementation(libs.retrofit2.retrofit.v290) // Asegúrate de usar la versión más reciente
     implementation(libs.converter.gson.v290) // Asegúrate de incluir el convertidor de Gson
     implementation(libs.google.gson)
-    implementation(libs.glide)
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
 
-    implementation(libs.compose)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
@@ -101,6 +99,10 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
+
+    //coil
+    implementation("io.coil-kt.coil3:coil-compose:3.0.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.0")
 
 }
 

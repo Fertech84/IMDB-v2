@@ -1,6 +1,7 @@
 package com.example.imdb_v2.view.ui.pages
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
@@ -33,8 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
+import coil3.compose.SubcomposeAsyncImage
 import com.example.imdb_v2.di.modules.MovieServiceConfig
 import com.example.imdb_v2.view.model.MovieUI
 import com.example.imdb_v2.view.ui.theme.lightGray
@@ -46,8 +47,8 @@ import com.example.imdb_v2.view.viewmodel.MovieViewmodel
 @Composable
 fun SearchPage(
     movieViewmodel: MovieViewmodel = viewModel(),
-    startPlayScreen : ()-> Unit = {}
-    ) {
+    startPlayScreen: () -> Unit = {}
+) {
 
     var searchMovieTextFieldState by rememberSaveable { mutableStateOf("") }
     val resultMoviesState by movieViewmodel.searchMovieList.observeAsState()
@@ -90,7 +91,7 @@ fun SearchPage(
                         movieSource = it,
                         movieViewmodel = movieViewmodel,
                         startPlayScreen = startPlayScreen
-                        )
+                    )
                 }
             }
 
@@ -100,9 +101,12 @@ fun SearchPage(
     }
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-private fun SearchResultComponent(movieSource: MovieUI, movieViewmodel: MovieViewmodel = viewModel(), startPlayScreen: () -> Unit) {
+private fun SearchResultComponent(
+    movieSource: MovieUI,
+    movieViewmodel: MovieViewmodel = viewModel(),
+    startPlayScreen: () -> Unit
+) {
     Surface(
         shape = RoundedCornerShape(10.dp),
         onClick = {
@@ -116,13 +120,24 @@ private fun SearchResultComponent(movieSource: MovieUI, movieViewmodel: MovieVie
                 .width(314.dp)
                 .background(mainWhite)
         ) {
-            GlideImage(
+            SubcomposeAsyncImage(
                 model = MovieServiceConfig.IMAGE_BASE_URL + movieSource.imageURL,
                 contentDescription = "Image",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .width(74.dp)
-                    .height(115.dp)
+                    .height(115.dp),
+                loading = {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        CircularProgressIndicator(
+                            color = mainYellow
+                        )
+                    }
+                }
             )
             Spacer(modifier = Modifier.width(15.dp))
             Column {

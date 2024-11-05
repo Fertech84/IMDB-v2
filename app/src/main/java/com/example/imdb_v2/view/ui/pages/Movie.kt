@@ -36,8 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
+import coil3.compose.SubcomposeAsyncImage
 import com.example.imdb_v2.R
 import com.example.imdb_v2.di.modules.MovieServiceConfig
 import com.example.imdb_v2.view.ui.components.SectionTitle
@@ -48,19 +47,19 @@ import com.example.imdb_v2.view.ui.theme.mainYellow
 import com.example.imdb_v2.view.viewmodel.MovieViewmodel
 
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun MovieScreen(padding: PaddingValues,
-                movieViewmodel: MovieViewmodel = viewModel(),
-                startHomeScreen : () -> Unit = {},
-                startProfileScreen : () -> Unit = {},
-                startSearchScreen : () -> Unit = {}
-                 ) {
+fun MovieScreen(
+    padding: PaddingValues,
+    movieViewmodel: MovieViewmodel = viewModel(),
+    startHomeScreen: () -> Unit = {},
+    startProfileScreen: () -> Unit = {},
+    startSearchScreen: () -> Unit = {}
+) {
 
     val movieToShowInScreen by movieViewmodel.selectedMovieScreen.observeAsState()
 
-    if (movieToShowInScreen != null){
-        LazyColumn (modifier = Modifier.padding(padding)) {
+    if (movieToShowInScreen != null) {
+        LazyColumn(modifier = Modifier.padding(padding)) {
             item {
                 Column(
                     modifier = Modifier
@@ -113,10 +112,21 @@ fun MovieScreen(padding: PaddingValues,
                         )
                     }
                     Spacer(modifier = Modifier.height(20.dp))
-                    GlideImage(model = (MovieServiceConfig.IMAGE_BASE_URL+movieToShowInScreen!!.trailerImage), contentDescription = (movieToShowInScreen!!.movieName+" Trailer") ,
-                        modifier = Modifier.fillMaxWidth()
-                        ,
+                    SubcomposeAsyncImage(model = (MovieServiceConfig.IMAGE_BASE_URL + movieToShowInScreen!!.trailerImage),
+                        contentDescription = (movieToShowInScreen!!.movieName + " Trailer"),
+                        modifier = Modifier.fillMaxWidth(),
                         contentScale = ContentScale.Crop,
+                        loading = {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                CircularProgressIndicator(
+                                    color = mainYellow
+                                )
+                            }
+                        }
 
                     )
 //                    Image(
@@ -129,12 +139,22 @@ fun MovieScreen(padding: PaddingValues,
 
                     Row {
                         Spacer(modifier = Modifier.width(25.dp))
-                        GlideImage(model = (MovieServiceConfig.IMAGE_BASE_URL+movieToShowInScreen!!.imageURL), contentDescription = (movieToShowInScreen!!.movieName+" poster") ,
-                            modifier = Modifier.width(74.dp)
-                            ,
+                        SubcomposeAsyncImage(model = (MovieServiceConfig.IMAGE_BASE_URL + movieToShowInScreen!!.imageURL),
+                            contentDescription = (movieToShowInScreen!!.movieName + " poster"),
+                            modifier = Modifier.width(74.dp),
                             contentScale = ContentScale.Crop,
-
-                            )
+                            loading = {
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    CircularProgressIndicator(
+                                        color = mainYellow
+                                    )
+                                }
+                            }
+                        )
 //                        Image(
 //                            painter = painterResource(id = R.drawable.portada),
 //                            contentDescription = "Poster Image",
@@ -262,7 +282,7 @@ fun MovieScreen(padding: PaddingValues,
                             Spacer(modifier = Modifier.width(1.dp))
                         }
 
-                        items(5){
+                        items(5) {
                             Column() {
                                 Image(
                                     painter = painterResource(id = R.drawable.personaje),
@@ -270,11 +290,13 @@ fun MovieScreen(padding: PaddingValues,
                                     contentScale = ContentScale.Crop,
                                     modifier = Modifier.width(74.dp)
                                 )
-                                Text(text = "Anya Taylor-Joy",
+                                Text(
+                                    text = "Anya Taylor-Joy",
                                     fontSize = 10.sp,
                                     fontWeight = FontWeight.Thin
                                 )
-                                Text(text = "Beth Harmon",
+                                Text(
+                                    text = "Beth Harmon",
                                     fontSize = 10.sp,
                                     fontWeight = FontWeight.Thin,
                                     color = lightGray
@@ -288,7 +310,7 @@ fun MovieScreen(padding: PaddingValues,
                 }
             }
         }
-    }else {
+    } else {
 
 
         Column(

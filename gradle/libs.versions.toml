@@ -3,7 +3,6 @@ agp = "8.5.2"
 compose = "1.0.0-beta01"
 constraintlayoutCompose = "1.0.1"
 converterGson = "2.9.0"
-glide = "4.16.0"
 gsonVersion = "2.10.1"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
@@ -26,9 +25,7 @@ constraintlayout = "2.1.4"
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
-compose = { module = "com.github.bumptech.glide:compose", version.ref = "compose" }
 converter-gson-v290 = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 google-gson = { module = "com.google.code.gson:gson", version.ref = "gsonVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

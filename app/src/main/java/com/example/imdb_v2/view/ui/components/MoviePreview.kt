@@ -1,14 +1,19 @@
 package com.example.imdb_v2.view.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -16,14 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
+import coil3.compose.SubcomposeAsyncImage
 import com.example.imdb_v2.di.modules.MovieServiceConfig
 import com.example.imdb_v2.view.model.MovieUI
 import com.example.imdb_v2.view.ui.theme.mainWhite
+import com.example.imdb_v2.view.ui.theme.mainYellow
 import com.example.imdb_v2.view.viewmodel.MovieViewmodel
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun MoviePreview(
     movieViewmodel: MovieViewmodel = viewModel(),
@@ -48,7 +52,7 @@ fun MoviePreview(
             ) {
                 val (trailer, poster, title, summary) = createRefs()
 
-                GlideImage(model = MovieServiceConfig.IMAGE_BASE_URL+movieSource.trailerImage, contentDescription = ("${movieSource.movieName} trailer") ,
+                SubcomposeAsyncImage(model = MovieServiceConfig.IMAGE_BASE_URL+movieSource.trailerImage, contentDescription = ("${movieSource.movieName} trailer") ,
                     modifier = Modifier
                         .constrainAs(trailer) {
                             top.linkTo(parent.top)
@@ -58,12 +62,23 @@ fun MoviePreview(
                         .height(200.dp)
                         .fillMaxWidth()
                         .padding(0.dp),
-                    contentScale = ContentScale.FillWidth
+                    contentScale = ContentScale.FillWidth,
+                    loading = {
+                        Column (
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            CircularProgressIndicator(
+                                color = mainYellow
+                            )
+                        }
+                    }
 
                 )
 
 
-                GlideImage(model = MovieServiceConfig.IMAGE_BASE_URL+movieSource.imageURL, contentDescription = ("${movieSource.movieName} poster") ,
+                SubcomposeAsyncImage(model = MovieServiceConfig.IMAGE_BASE_URL+movieSource.imageURL, contentDescription = ("${movieSource.movieName} poster") ,
                     modifier = Modifier
                         .constrainAs(poster) {
                             top.linkTo(trailer.bottom, margin = (-105).dp)
@@ -71,7 +86,18 @@ fun MoviePreview(
                         }
                         .width(124.dp)
                         .height(200.dp),
-                    contentScale = ContentScale.Fit
+                    contentScale = ContentScale.Fit,
+                    loading = {
+                        Column (
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            CircularProgressIndicator(
+                                color = mainYellow
+                            )
+                        }
+                    }
 
                 )
 //            Image(
