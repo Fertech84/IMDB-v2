@@ -1,7 +1,10 @@
 package com.example.imdb_v2.view.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,19 +12,24 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
+import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.example.imdb_v2.di.modules.MovieServiceConfig
 import com.example.imdb_v2.view.model.MovieUI
 import com.example.imdb_v2.view.ui.theme.mainBlack
@@ -31,7 +39,6 @@ import com.example.imdb_v2.view.ui.theme.robotoFamily
 import com.example.imdb_v2.view.viewmodel.MovieViewmodel
 
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun MovieComponent(
     movieSource: MovieUI, movieViewmodel: MovieViewmodel,
@@ -58,7 +65,8 @@ fun MovieComponent(
             ConstraintLayout {
                 val (poster, addButton, star, rating, title, dangerIcon) = createRefs()
 
-                GlideImage(model = (MovieServiceConfig.IMAGE_BASE_URL + movieSource.imageURL),
+                SubcomposeAsyncImage(
+                    model = MovieServiceConfig.IMAGE_BASE_URL + movieSource.imageURL,
                     contentDescription = (movieSource.movieName + " poster"),
                     modifier = Modifier
                         .constrainAs(poster) {
@@ -68,7 +76,18 @@ fun MovieComponent(
                         }
                         .width(110.dp)
                         .height(140.dp),
-                    contentScale = ContentScale.Fit
+                    contentScale = ContentScale.Fit,
+                    loading = {
+                        Column (
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                            ) {
+                            CircularProgressIndicator(
+                                color = mainYellow
+                            )
+                        }
+                    }
 
                 )
 
