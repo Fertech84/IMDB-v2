@@ -38,12 +38,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.imdb_v2.R
 import com.example.imdb_v2.view.ui.theme.darkGray
 import com.example.imdb_v2.view.ui.theme.lightGray
 import com.example.imdb_v2.view.ui.theme.mainBlack
 import com.example.imdb_v2.view.ui.theme.mainWhite
 import com.example.imdb_v2.view.ui.theme.mainYellow
+import com.example.imdb_v2.view.viewmodel.LoginViewModel
 import org.w3c.dom.Text
 
 
@@ -51,7 +53,8 @@ import org.w3c.dom.Text
 fun LoginPage(
     navigateToSignup: () -> Unit = {},
     navigateToHome: () -> Unit = {},
-    navigateToProfile: () -> Unit = {}
+    navigateToProfile: () -> Unit = {},
+    loginViewModel: LoginViewModel = viewModel()
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -149,7 +152,10 @@ fun LoginPage(
 
         Spacer(modifier = Modifier.height(28.dp))
         Button(
-            onClick = navigateToProfile,
+            onClick = {
+                loginViewModel.login(emailTextFieldState, passwordTextFieldState)
+                navigateToHome()
+            },
             enabled = loginButtonEnableState,
             colors = ButtonColors(
                 contentColor = mainWhite,

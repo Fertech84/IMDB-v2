@@ -1,33 +1,62 @@
 package com.example.imdb_v2.domain.usecases
 
-import com.example.imdb_v2.data.DTO.MovieDTO
-import com.example.imdb_v2.data.DTO.MoviesDTO
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import com.example.imdb_v2.data.network.MovieService
+import com.example.imdb_v2.data.repository.MovieRepository
+import com.example.imdb_v2.domain.model.Movie
+import com.example.imdb_v2.util.toMovie
 
-const val API_KEY = "c5c47722a4adcc77f6e84f28a48b857a"
+class MovieUseCases(
+    private val movieService: MovieService,
+    private val movieRepository: MovieRepository
+) {
+    suspend fun getTopRated() : List<Movie>?{
+        var movies : List<Movie>? = null
+        try {
+            movies =  movieService.getTopRated().results.map { it.toMovie() }
+            movieRepository.saveTopRated(movies)
+        }catch (error : Exception){
+            movies = movieRepository.getTopRated()
+        }
 
-interface MovieService {
-    @GET("movie/top_rated?")
-    suspend fun getTopRated(
-        @Query("api_key") apikey: String = API_KEY
-    ): MoviesDTO
+        return movies
+    }
 
-    @GET("movie/popular?")
-    suspend fun getPopular(
-        @Query("api_key") apikey: String = API_KEY
-    ): MoviesDTO
+    suspend fun getPopular() : List<Movie>?{
+        var movies : List<Movie>? = null
+        try {
+            movies =  movieService.getPopular().results.map { it.toMovie() }
+            movieRepository.savePopular(movies)
+        }catch (error : Exception){
+            movies = movieRepository.getPopular()
+        }
 
-    @GET("movie/{movie_id}?")
-    suspend fun getMovie(
-        @Path("movie_id") movieId: String,
-        @Query("api_key") apikey: String = API_KEY
-    ): MovieDTO
+        return movies
+    }
 
-    @GET("search/movie?")
-    suspend fun searchMovies(
-        @Query("query") movieName: String,
-        @Query("api_key") apiKey: String = "c5c47722a4adcc77f6e84f28a48b857a"
-    ): MoviesDTO
+    suspend fun getMovie(id : Int) : Movie?{
+        var movie : Movie? = null
+
+        movie = try {
+            movieService.getMovie(movieId = "$id").toMovie()
+        }catch (error : Exception){
+            movieRepository.getMovie(id)
+        }
+
+        return movie
+    }
+
+    suspend fun searchMovie(name : String) : List<Movie>?{
+        var movies : List<Movie>? = null
+
+        movies =try {
+            movieService.searchMovies(name).results.map { it.toMovie() }
+        }catch (error : Exception){
+            movieRepository.searchMove(name)
+        }
+
+        return movies
+    }
+
+
+
 }

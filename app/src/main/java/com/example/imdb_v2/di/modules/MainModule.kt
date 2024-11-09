@@ -1,10 +1,17 @@
 package com.example.imdb_v2.di.modules
 
-import com.example.imdb_v2.domain.usecases.MovieService
-import com.example.imdb_v2.view.model.mapper.MovieToMovieUIMapper
+import android.content.Context
+import androidx.room.Room
+import com.example.imdb_v2.data.local.database.DatabaseApp
+import com.example.imdb_v2.data.local.database.dao.UserDAO
+import com.example.imdb_v2.data.repository.UserRepository
+import com.example.imdb_v2.data.repository.UserRepositoryImpl
+import com.example.imdb_v2.data.network.MovieService
+import com.example.imdb_v2.domain.usecases.UserUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -32,12 +39,48 @@ object MovieServiceConfig {
     }
 }
 
+
+
 @Module
 @InstallIn(SingletonComponent::class)
-object MovieToMovieUIMapperProvider{
+object DatabaseProvider{
+
+    private const val DATABASE_MAME = "main-database"
 
     @Provides
-    fun provideMovieToMovieUIMapper() : MovieToMovieUIMapper {
-        return MovieToMovieUIMapper()
+    @Singleton
+    fun provideAppDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(
+        context = context, DatabaseApp::class.java, DATABASE_MAME
+    ).build()
+
+    @Provides
+    fun provideUserDao(databaseApp : DatabaseApp) = databaseApp.getUserDao()
+
+    @Provides
+    fun provideMovieDao(databaseApp: DatabaseApp) = databaseApp.getMovieDao()
+
+
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object RepositoryProvider{
+
+
+
+
+    @Provides
+    fun provideUserRepository(userDAO: UserDAO) : UserRepository{
+        return UserRepositoryImpl(userDAO)
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object UseCaseProvider{
+
+    @Provides
+    fun provideUserUseCase(userRepository: UserRepository) : UserUseCases{
+        return UserUseCases(userRepository)
     }
 }

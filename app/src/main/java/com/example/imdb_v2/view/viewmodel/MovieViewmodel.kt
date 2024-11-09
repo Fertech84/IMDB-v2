@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.imdb_v2.data.repository.MovieRepositoryImpl
+import com.example.imdb_v2.data.network.MovieService
+import com.example.imdb_v2.util.toUI
 import com.example.imdb_v2.view.model.MovieUI
-import com.example.imdb_v2.view.model.mapper.MovieToMovieUIMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,8 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieViewmodel @Inject constructor(
-    private val movieRepository : MovieRepositoryImpl,
-    private val movieToMovieUI : MovieToMovieUIMapper
+    private val movieService: MovieService,
 ) : ViewModel() {
 
     //Top rated state
@@ -46,8 +45,8 @@ class MovieViewmodel @Inject constructor(
 
     fun searchMovie(movieName : String){
         viewModelScope.launch(Dispatchers.IO) {
-            val searchResults  = movieRepository.searchMovie(movieName).map {
-                movieToMovieUI.movieToMovieUI(it)
+            val searchResults  = movieService.searchMovies(movieName).results.map {
+                it.toUI()
             }
 
             withContext(Dispatchers.Main){
@@ -58,8 +57,8 @@ class MovieViewmodel @Inject constructor(
     private fun getTopRated() {
         if (topRatedMovieList.value == null) {
             viewModelScope.launch(Dispatchers.IO) {
-                val topRatedMovieList = movieRepository.getTopRated().map {
-                    movieToMovieUI.movieToMovieUI(it)
+                val topRatedMovieList = movieService.getTopRated().results.map {
+                    it.toUI()
                 }
 
                 withContext(Dispatchers.Main) {
@@ -73,7 +72,7 @@ class MovieViewmodel @Inject constructor(
 
     fun changeSelectedMovieScreen(id : String){
         viewModelScope.launch(Dispatchers.IO){
-            val newSelectedMovieForScreen = movieToMovieUI.movieToMovieUI(movieRepository.getMovie(id))
+            val newSelectedMovieForScreen = movieService.getMovie(id).toUI()
             withContext(Dispatchers.Main){
                 _selectedMovieScreen.value = newSelectedMovieForScreen
             }
@@ -84,8 +83,8 @@ class MovieViewmodel @Inject constructor(
 
         if (popularMovieList.value == null){
             viewModelScope.launch(Dispatchers.IO) {
-                val popularMovieList = movieRepository.getPopular().map {
-                    movieToMovieUI.movieToMovieUI(it)
+                val popularMovieList = movieService.getPopular().results.map {
+                    it.toUI()
                 }
 
                 withContext(Dispatchers.Main){
@@ -97,3 +96,4 @@ class MovieViewmodel @Inject constructor(
 
     }
 }
+
