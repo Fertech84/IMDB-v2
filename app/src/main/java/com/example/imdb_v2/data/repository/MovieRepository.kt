@@ -10,27 +10,27 @@ enum class MovieType{
 }
 
 interface MovieRepository {
-    suspend fun getTopRated(): List<Movie>?
-    suspend fun getPopular(): List<Movie>?
+    suspend fun getTopRated(): List<Movie>
+    suspend fun getPopular(): List<Movie>
     suspend fun saveTopRated(movies :List<Movie>)
     suspend fun savePopular(movies :List<Movie>)
-    suspend fun searchMove(name : String) : List<Movie>?
+    suspend fun searchMove(name : String) : List<Movie>
     suspend fun getMovie(id : Int) : Movie?
 }
 
 class MovieRepositoryImpl  (
-    val movieDao: MovieDao
+    private val movieDao: MovieDao
 ): MovieRepository {
-    override suspend fun getTopRated(): List<Movie>? {
+    override suspend fun getTopRated(): List<Movie> {
         val movies =  movieDao.getAllMovies(type = MovieType.TOP_RATED.name)
             .map { it.toMovie() }
-        return movies.ifEmpty { null }
+        return movies
     }
 
-    override suspend fun getPopular(): List<Movie>? {
+    override suspend fun getPopular(): List<Movie> {
         val movies = movieDao.getAllMovies(type = MovieType.POPULAR.name)
             .map { it.toMovie() }
-        return movies.ifEmpty { null }
+        return movies
     }
 
     override suspend fun saveTopRated(movies: List<Movie>) {
@@ -41,9 +41,9 @@ class MovieRepositoryImpl  (
         movieDao.saveMovies(movies.map { it.toPopularMovieEntity() })
     }
 
-    override suspend fun searchMove(name: String): List<Movie>? {
+    override suspend fun searchMove(name: String): List<Movie> {
         val movies = movieDao.searchMovie(name).map { it.toMovie() }
-        return movies.ifEmpty { null }
+        return movies
     }
 
     override suspend fun getMovie(id: Int): Movie? {

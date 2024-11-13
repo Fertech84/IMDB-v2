@@ -118,6 +118,9 @@ dependencies {
     implementation("androidx.room:room-paging:$room_version")
     testImplementation(kotlin("test"))
 
+    //icons
+    implementation("androidx.compose.material:material-icons-extended-android:1.7.5")
+
 }
 
 kapt {

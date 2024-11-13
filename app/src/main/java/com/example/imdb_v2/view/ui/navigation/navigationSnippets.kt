@@ -32,7 +32,7 @@ fun NavigationWrapper(
     signupViewModel: SignupViewModel = viewModel(),
     loginViewModel: LoginViewModel = viewModel()
 ) {
-    Scaffold { innerPadding ->
+    Scaffold() { innerPadding ->
 
         val navController = rememberNavController()
 

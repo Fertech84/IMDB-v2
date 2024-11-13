@@ -19,6 +19,18 @@ fun Movie.toEntity() : Movie {
     )
 }
 
+fun Movie.ToMovieUI() : MovieUI {
+    return  MovieUI(
+        id = this.id,
+        movieName = this.movieName,
+        imageURL = this.imageURL,
+        rating = this.rating,
+        trailerImage = this.trailerImage,
+        date = this.date,
+        description = this.description
+    )
+}
+
 fun MovieDTO.toUI() : MovieUI {
     return  MovieUI(
         id = this.id,

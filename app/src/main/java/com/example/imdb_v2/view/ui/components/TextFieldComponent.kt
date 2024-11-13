@@ -5,6 +5,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,9 +41,9 @@ fun PasswordFormTextField(
             value = passwordValue,
             trailingIcon = {
                 val image = if (isShowingPassword){
-                    Icons.Outlined.Lock
+                    Icons.Default.VisibilityOff
                 }else{
-                    Icons.Filled.Lock
+                    Icons.Default.Visibility
                 }
                 IconButton(onClick =  showPassword ) {
 

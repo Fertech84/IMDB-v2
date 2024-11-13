@@ -9,8 +9,8 @@ class MovieUseCases(
     private val movieService: MovieService,
     private val movieRepository: MovieRepository
 ) {
-    suspend fun getTopRated() : List<Movie>?{
-        var movies : List<Movie>? = null
+    suspend fun getTopRated() : List<Movie>{
+        var movies : List<Movie>
         try {
             movies =  movieService.getTopRated().results.map { it.toMovie() }
             movieRepository.saveTopRated(movies)
@@ -21,8 +21,8 @@ class MovieUseCases(
         return movies
     }
 
-    suspend fun getPopular() : List<Movie>?{
-        var movies : List<Movie>? = null
+    suspend fun getPopular() : List<Movie>{
+        var movies : List<Movie>
         try {
             movies =  movieService.getPopular().results.map { it.toMovie() }
             movieRepository.savePopular(movies)
@@ -45,10 +45,9 @@ class MovieUseCases(
         return movie
     }
 
-    suspend fun searchMovie(name : String) : List<Movie>?{
-        var movies : List<Movie>? = null
+    suspend fun searchMovie(name : String) : List<Movie>{
 
-        movies =try {
+        val movies : List<Movie> = try {
             movieService.searchMovies(name).results.map { it.toMovie() }
         }catch (error : Exception){
             movieRepository.searchMove(name)

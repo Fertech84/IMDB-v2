@@ -3,10 +3,14 @@ package com.example.imdb_v2.di.modules
 import android.content.Context
 import androidx.room.Room
 import com.example.imdb_v2.data.local.database.DatabaseApp
+import com.example.imdb_v2.data.local.database.dao.MovieDao
 import com.example.imdb_v2.data.local.database.dao.UserDAO
 import com.example.imdb_v2.data.repository.UserRepository
 import com.example.imdb_v2.data.repository.UserRepositoryImpl
 import com.example.imdb_v2.data.network.MovieService
+import com.example.imdb_v2.data.repository.MovieRepository
+import com.example.imdb_v2.data.repository.MovieRepositoryImpl
+import com.example.imdb_v2.domain.usecases.MovieUseCases
 import com.example.imdb_v2.domain.usecases.UserUseCases
 import dagger.Module
 import dagger.Provides
@@ -51,7 +55,7 @@ object DatabaseProvider{
     @Singleton
     fun provideAppDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(
         context = context, DatabaseApp::class.java, DATABASE_MAME
-    ).build()
+    ).fallbackToDestructiveMigration().build()
 
     @Provides
     fun provideUserDao(databaseApp : DatabaseApp) = databaseApp.getUserDao()
@@ -66,12 +70,14 @@ object DatabaseProvider{
 @InstallIn(SingletonComponent::class)
 object RepositoryProvider{
 
-
-
-
     @Provides
     fun provideUserRepository(userDAO: UserDAO) : UserRepository{
         return UserRepositoryImpl(userDAO)
+    }
+
+    @Provides
+    fun provideMovieRepository(movieDao: MovieDao): MovieRepository{
+        return MovieRepositoryImpl(movieDao)
     }
 }
 
@@ -82,5 +88,10 @@ object UseCaseProvider{
     @Provides
     fun provideUserUseCase(userRepository: UserRepository) : UserUseCases{
         return UserUseCases(userRepository)
+    }
+
+    @Provides
+    fun provideMovieUseCases(movieRepository: MovieRepository, movieService: MovieService): MovieUseCases{
+        return MovieUseCases(movieService, movieRepository)
     }
 }

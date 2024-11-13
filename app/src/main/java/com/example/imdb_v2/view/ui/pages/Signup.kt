@@ -20,11 +20,13 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,6 +41,7 @@ import com.example.imdb_v2.view.ui.components.UserNameFormField
 import com.example.imdb_v2.view.ui.theme.darkGray
 import com.example.imdb_v2.view.ui.theme.lightGray
 import com.example.imdb_v2.view.ui.theme.mainWhite
+import com.example.imdb_v2.view.viewmodel.SignupStatus
 import com.example.imdb_v2.view.viewmodel.SignupViewModel
 
 
@@ -52,7 +55,13 @@ fun SignupScreen(
     var signupPasswordState by rememberSaveable { mutableStateOf("") }
     var signupEnableButton by rememberSaveable { mutableStateOf(false) }
     var signupShowPasswordState by rememberSaveable { mutableStateOf(false) }
+    val creationStatusState = signupViewModel.creationStatus.observeAsState()
 
+
+    if (creationStatusState.value == SignupStatus.success){
+        signupViewModel.closeSignup()
+        navigateToLogin()
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -125,6 +134,10 @@ fun SignupScreen(
 
 
         Spacer(modifier = Modifier.height(9.dp))
+        Text(
+            text = if (creationStatusState.value == SignupStatus.failed) "Algo salió mal" else "",
+            color = Color.Red
+            )
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
