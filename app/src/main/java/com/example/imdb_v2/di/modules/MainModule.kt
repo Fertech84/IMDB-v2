@@ -5,11 +5,12 @@ import androidx.room.Room
 import com.example.imdb_v2.data.local.database.DatabaseApp
 import com.example.imdb_v2.data.local.database.dao.MovieDao
 import com.example.imdb_v2.data.local.database.dao.UserDAO
-import com.example.imdb_v2.data.repository.UserRepository
-import com.example.imdb_v2.data.repository.UserRepositoryImpl
+import com.example.imdb_v2.data.local.preferences.DatastoreLocalManager
 import com.example.imdb_v2.data.network.MovieService
 import com.example.imdb_v2.data.repository.MovieRepository
 import com.example.imdb_v2.data.repository.MovieRepositoryImpl
+import com.example.imdb_v2.data.repository.UserRepository
+import com.example.imdb_v2.data.repository.UserRepositoryImpl
 import com.example.imdb_v2.domain.usecases.MovieUseCases
 import com.example.imdb_v2.domain.usecases.UserUseCases
 import dagger.Module
@@ -38,16 +39,15 @@ object MovieServiceConfig {
     }
 
     @Provides
-    fun provideMovieService(retrofit : Retrofit): MovieService {
+    fun provideMovieService(retrofit: Retrofit): MovieService {
         return retrofit.create(MovieService::class.java)
     }
 }
 
 
-
 @Module
 @InstallIn(SingletonComponent::class)
-object DatabaseProvider{
+object DatabaseProvider {
 
     private const val DATABASE_MAME = "main-database"
 
@@ -58,7 +58,7 @@ object DatabaseProvider{
     ).fallbackToDestructiveMigration().build()
 
     @Provides
-    fun provideUserDao(databaseApp : DatabaseApp) = databaseApp.getUserDao()
+    fun provideUserDao(databaseApp: DatabaseApp) = databaseApp.getUserDao()
 
     @Provides
     fun provideMovieDao(databaseApp: DatabaseApp) = databaseApp.getMovieDao()
@@ -68,30 +68,43 @@ object DatabaseProvider{
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoryProvider{
+object RepositoryProvider {
 
     @Provides
-    fun provideUserRepository(userDAO: UserDAO) : UserRepository{
+    fun provideUserRepository(userDAO: UserDAO): UserRepository {
         return UserRepositoryImpl(userDAO)
     }
 
     @Provides
-    fun provideMovieRepository(movieDao: MovieDao): MovieRepository{
+    fun provideMovieRepository(movieDao: MovieDao): MovieRepository {
         return MovieRepositoryImpl(movieDao)
     }
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
-object UseCaseProvider{
+object UseCaseProvider {
 
     @Provides
-    fun provideUserUseCase(userRepository: UserRepository) : UserUseCases{
+    fun provideUserUseCase(userRepository: UserRepository): UserUseCases {
         return UserUseCases(userRepository)
     }
 
     @Provides
-    fun provideMovieUseCases(movieRepository: MovieRepository, movieService: MovieService): MovieUseCases{
+    fun provideMovieUseCases(
+        movieRepository: MovieRepository,
+        movieService: MovieService
+    ): MovieUseCases {
         return MovieUseCases(movieService, movieRepository)
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object DataStoreLocalManagerProvider {
+
+    @Provides
+    fun provideDataStore(@ApplicationContext context: Context): DatastoreLocalManager {
+        return DatastoreLocalManager(context)
     }
 }
