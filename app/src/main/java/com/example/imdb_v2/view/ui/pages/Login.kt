@@ -4,11 +4,9 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -45,12 +43,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.imdb_v2.R
 import com.example.imdb_v2.view.ui.theme.darkGray
 import com.example.imdb_v2.view.ui.theme.lightGray
-import com.example.imdb_v2.view.ui.theme.mainBlack
 import com.example.imdb_v2.view.ui.theme.mainWhite
 import com.example.imdb_v2.view.ui.theme.mainYellow
 import com.example.imdb_v2.view.viewmodel.LoginStatus
 import com.example.imdb_v2.view.viewmodel.LoginViewModel
-import org.w3c.dom.Text
 
 
 @Composable
@@ -61,9 +57,17 @@ fun LoginPage(
     loginViewModel: LoginViewModel = viewModel()
 ) {
 
+
+
+
     val loginStatusState = loginViewModel.loginStatus.observeAsState()
 
-    if (loginStatusState.value == LoginStatus.loginSuccess) navigateToHome()
+
+
+    if (loginStatusState.value == LoginStatus.loginSuccess) {
+
+        navigateToHome()
+    }
     else if (loginStatusState.value == LoginStatus.loginFailed) {
         Toast.makeText(LocalContext.current, "Credenciales incorrectas", Toast.LENGTH_LONG).show()
         loginViewModel.reloadLoginState()
