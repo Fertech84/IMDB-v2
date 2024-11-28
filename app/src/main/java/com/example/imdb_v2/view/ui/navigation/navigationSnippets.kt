@@ -5,18 +5,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.imdb_v2.view.ui.pages.LoginPage
 import com.example.imdb_v2.view.ui.pages.MainPage
-import com.example.imdb_v2.view.ui.pages.SearchPage
 import com.example.imdb_v2.view.ui.pages.SignupScreen
+import com.example.imdb_v2.view.viewmodel.LoginViewModel
 import com.example.imdb_v2.view.viewmodel.MovieViewmodel
+import com.example.imdb_v2.view.viewmodel.SignupViewModel
 
-enum class MovieScreenEnum() {
+enum class MovieScreenEnum {
     Home,
     Play,
     Search,
@@ -28,9 +28,11 @@ enum class MovieScreenEnum() {
 
 @Composable
 fun NavigationWrapper(
-    movieViewmodel: MovieViewmodel = viewModel()
+    movieViewmodel: MovieViewmodel = viewModel(),
+    signupViewModel: SignupViewModel = viewModel(),
+    loginViewModel: LoginViewModel = viewModel()
 ) {
-    Scaffold { innerPadding ->
+    Scaffold() { innerPadding ->
 
         val navController = rememberNavController()
 
@@ -44,12 +46,14 @@ fun NavigationWrapper(
             composable(route = MovieScreenEnum.Login.name){
                 LoginPage(
                     navigateToSignup = {screenNavigator.startSpecificScreen(MovieScreenEnum.Signup.name)},
-                    navigateToHome = {screenNavigator.startSpecificScreen(MovieScreenEnum.Home.name)}
+                    navigateToHome = {screenNavigator.startSpecificScreen(MovieScreenEnum.Home.name)},
+                    loginViewModel = loginViewModel
                 )
             }
             composable(route = MovieScreenEnum.Signup.name){
                 SignupScreen(
-                    navigateToLogin = {screenNavigator.startSpecificScreen(MovieScreenEnum.Login.name)}
+                    navigateToLogin = {screenNavigator.startSpecificScreen(MovieScreenEnum.Login.name)},
+                    signupViewModel = signupViewModel
                 )
             }
 

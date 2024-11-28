@@ -1,20 +1,12 @@
 package com.example.imdb_v2.view.ui.pages
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.imdb_v2.view.ui.navigation.MovieScreenEnum
 import com.example.imdb_v2.view.ui.components.NavBar
-import com.example.imdb_v2.view.ui.theme.mainYellow
+import com.example.imdb_v2.view.ui.navigation.MovieScreenEnum
 import com.example.imdb_v2.view.viewmodel.MovieViewmodel
 
 @Composable

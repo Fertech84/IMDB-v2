@@ -8,48 +8,60 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.imdb_v2.R
+import com.example.imdb_v2.view.model.UserUI
+import com.example.imdb_v2.view.ui.components.EmailFormField
+import com.example.imdb_v2.view.ui.components.PasswordFormTextField
+import com.example.imdb_v2.view.ui.components.UserNameFormField
 import com.example.imdb_v2.view.ui.theme.darkGray
 import com.example.imdb_v2.view.ui.theme.lightGray
 import com.example.imdb_v2.view.ui.theme.mainWhite
+import com.example.imdb_v2.view.viewmodel.SignupStatus
+import com.example.imdb_v2.view.viewmodel.SignupViewModel
 
 
 @Composable
 fun SignupScreen(
-    navigateToLogin : ()-> Unit = {}
+    navigateToLogin: () -> Unit = {},
+    signupViewModel: SignupViewModel = viewModel()
 ) {
     var signupNameState by rememberSaveable { mutableStateOf("") }
     var signupEmailState by rememberSaveable { mutableStateOf("") }
     var signupPasswordState by rememberSaveable { mutableStateOf("") }
     var signupEnableButton by rememberSaveable { mutableStateOf(false) }
     var signupShowPasswordState by rememberSaveable { mutableStateOf(false) }
+    val creationStatusState = signupViewModel.creationStatus.observeAsState()
 
+
+    if (creationStatusState.value == SignupStatus.success){
+        signupViewModel.closeSignup()
+        navigateToLogin()
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -58,7 +70,7 @@ fun SignupScreen(
     ) {
 
         Row(modifier = Modifier.fillMaxWidth()) {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { navigateToLogin() }) {
                 Icon(
                     Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back to login"
@@ -90,81 +102,42 @@ fun SignupScreen(
             )
         }
         Spacer(modifier = Modifier.height(19.dp))
-        OutlinedTextField(
-            value = signupNameState,
-            onValueChange = {
-                signupNameState = it
-                signupEnableButton =
-                    validateSignupStatus(signupNameState, signupEmailState, signupPasswordState)
-            },
-            label = { Text(text = "Nombre") },
-            shape = RoundedCornerShape(10.dp),
-            modifier = Modifier
-                .width(300.dp)
-        )
 
-        Spacer(modifier = Modifier.height(20.dp))
-        OutlinedTextField(
-            value = signupEmailState,
-            onValueChange = {
-                signupEmailState = it
-                signupEnableButton =
-                    validateSignupStatus(signupNameState, signupEmailState, signupPasswordState)
-            },
-            shape = RoundedCornerShape(10.dp),
-            label = { Text(text = "Correo electrónico") },
-            modifier = Modifier
-                .width(300.dp)
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-
-        if(!signupShowPasswordState){
-            OutlinedTextField(
-                visualTransformation = PasswordVisualTransformation(),
-                value = signupPasswordState,
-                trailingIcon = {
-                    IconButton(onClick = { signupShowPasswordState = !signupShowPasswordState }) {
-                        if (!signupShowPasswordState) {
-                            Icon(Icons.Filled.Lock, contentDescription = "Unlock password")
-                        } else {
-                            Icon(Icons.Outlined.Lock, contentDescription = "Lock")
-                        }
-                    }
-                },
-                onValueChange = {
-                    signupPasswordState = it
-                    signupEnableButton =
-                        validateSignupStatus(signupNameState, signupEmailState, signupPasswordState)
-                },
-                shape = RoundedCornerShape(10.dp),
-                label = { Text(text = "Contraseña") },
-                modifier = Modifier
-                    .width(300.dp)
-            )
-        }else {
-            OutlinedTextField(
-                value = signupPasswordState,
-                trailingIcon = {
-                    IconButton(onClick = { signupShowPasswordState = !signupShowPasswordState }) {
-                        if (!signupShowPasswordState) {
-                            Icon(Icons.Filled.Lock, contentDescription = "Unlock password")
-                        } else {
-                            Icon(Icons.Outlined.Lock, contentDescription = "Lock")
-                        }
-                    }
-                },
-                onValueChange = {
-                    signupPasswordState = it
-                    signupEnableButton =
-                        validateSignupStatus(signupNameState, signupEmailState, signupPasswordState)
-                },
-                shape = RoundedCornerShape(10.dp),
-                label = { Text(text = "Contraseña") },
-                modifier = Modifier
-                    .width(300.dp)
-            )
+        UserNameFormField(
+            usernameValue = signupNameState
+        ) {
+            signupNameState = it
+            signupEnableButton = validateSignupStatus(signupNameState, signupEmailState, signupPasswordState)
         }
+
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        EmailFormField(emailValue = signupEmailState) {
+            signupEmailState = it
+            signupEnableButton = validateSignupStatus(signupNameState, signupEmailState, signupPasswordState)
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        PasswordFormTextField(
+            passwordValue = signupPasswordState,
+            onChangePasswordValue = { passwordValue: String ->
+               run {
+                   signupPasswordState = passwordValue
+                   signupEnableButton = validateSignupStatus(signupNameState, signupEmailState, signupPasswordState)
+               }
+            },
+            isShowingPassword = signupShowPasswordState,
+            showPassword = { signupShowPasswordState = !signupShowPasswordState }
+        )
+
+
         Spacer(modifier = Modifier.height(9.dp))
+        Text(
+            text = if (creationStatusState.value == SignupStatus.failed) "Algo salió mal" else "",
+            color = Color.Red
+            )
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -178,7 +151,16 @@ fun SignupScreen(
         }
         Spacer(modifier = Modifier.height(34.dp))
         Button(
-            onClick = navigateToLogin,
+            onClick = {
+                signupViewModel.createNewUser(
+                    UserUI(
+                        uid = 0,
+                        username = signupNameState,
+                        email = signupEmailState,
+                        password = signupPasswordState
+                    )
+                )
+            },
             enabled = signupEnableButton,
             colors = ButtonColors(
                 contentColor = mainWhite,
